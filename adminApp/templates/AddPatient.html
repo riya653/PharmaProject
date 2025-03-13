@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="col-sm-12">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Add Patient Details</h3>
+      </div>
+      <div class="card-block">
+        <form method="post" action="{% url 'save_patient' %}" enctype="multipart/form-data">
+           {% csrf_token %}
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="fname" placeholder="Type your First Name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="lname" placeholder="Type your Last Name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Age</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="age" placeholder="Type your Age">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Gender</label>
+            <div class="col-sm-10">
+              <select name="gender" class="form-control">
+                <option>Choose your gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Others</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="number" placeholder="Type your Phone Number">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Blood Group</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="blood" placeholder="Type your Blood Group">
+            </div>
+          </div>
+          <div class="form-group row"><label class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+              <textarea rows="5" cols="5" class="form-control" name="address" placeholder="Address"></textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email Id</label>
+            <div class="col-sm-10">
+              <input type="email" class="form-control" name="email" placeholder="Enter your Email Id">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Emergency ContactNo</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="emergency" placeholder="Emergency Contact Number">
+            </div>
+          </div>
+           <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Date of Admission</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="doa">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Upload Profile Image</label>
+            <div class="col-sm-10">
+              <input type="file" class="form-control" name="profile">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary "> Submit </button>
+          <button class="btn btn-light">Cancel</button>
+        </form>
+
+      </div>
+    </div>
+
+
+  </div>
+</body>
+</html>
+{% endblock %}

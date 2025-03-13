@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% extends 'index.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="col-sm-12">
+    <!-- Basic Form Inputs card start -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Edit Doctor Details</h3>
+      </div>
+      <div class="card-block">
+        <form method="post" action="{% url 'update_doctor' do_id=doctor.id %}" enctype="multipart/form-data">
+           {% csrf_token %}
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">First Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="fname" value="{{doctor.First_Name}}" placeholder="Type your First Name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Last Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="lname" value="{{doctor.Last_Name}}" placeholder="Type your Last Name">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Age</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="age" value="{{doctor.Age}}" placeholder="Type your Age">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Gender</label>
+            <div class="col-sm-10">
+              <select name="gender" class="form-control">
+                <option>{{doctor.Gender}}</option>
+                <option>Choose your gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Others</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Specialization</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="special" value="{{doctor.Specialization}}" placeholder="Type your Specialization">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Phone Number</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="number" value="{{doctor.Phone_Number}}" placeholder="Type your Phone Number">
+            </div>
+          </div>
+          <div class="form-group row"><label class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+              <textarea rows="5" cols="5" class="form-control" name="address" placeholder="Address">{{doctor.Address}}</textarea>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email Id</label>
+            <div class="col-sm-10">
+              <input type="email" class="form-control" name="email" value="{{doctor.Email_Id}}" placeholder="Enter your Email Id">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Experience</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control" name="experience"  value="{{doctor.Experience}}" placeholder="Enter your Experience">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary "> Update </button>
+          <button class="btn btn-light">Cancel</button>
+        </form>
+
+      </div>
+    </div>
+
+
+  </div>
+</body>
+</html>
+{% endblock %}

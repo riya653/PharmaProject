@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <title>Patient Dashboard - Pharma</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'user/fonts/icomoon/style.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/magnific-popup.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/jquery-ui.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/owl.theme.default.min.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/aos.css' %}">
+  <link rel="stylesheet" href="{% static 'user/css/style.css' %}">
+</head>
+
+<body>
+
+  <div class="site-wrap">
+
+
+    <div class="site-navbar py-2">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="logo">
+                        <div class="site-logo">
+                            <a href="{% url 'home' %}" class="js-logo-clone">Patient</a>
+                        </div>
+                    </div>
+                    <div class="main-nav d-none d-lg-block">
+                        <nav class="site-navigation text-right text-md-center" role="navigation">
+                            <ul class="site-menu js-clone-nav d-none d-lg-block">
+                                <li><a href="{% url 'home' %}">Home</a></li>
+
+                                <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
+                                <li><a href="{% url 'appointment_history' %}">Appointments</a></li>
+
+                                <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
+                                <li><a href="{% url 'about_page' %}">About</a></li>
+
+                                {% if request.session.Username %}
+                                <li><a href="{% url 'user_logout' %}" class="nav-item nav-link btn btn-primary py-2 px-4">WELCOME {{request.session.Username}} /Logout</a></li>
+                                {% else %}
+                                <li><a href="{% url 'sign_in' %}" class="btn btn-primary py-2 px-4">Register/Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="icons">
+                        <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
+                            <span class="icon-shopping-bag"></span>
+                            <span class="number">{{x}}</span>
+                        </a>
+                        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
+                            <span class="icon-menu"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="bg-light py-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mb-0"><a href="index.html">Home</a> <span class="mx-2 mb-0">/</span> <a
+              href="shop.html">Single Item</a> <span class="mx-2 mb-0">/</span> <strong class="text-black">{{medicine.Name}}</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-md-6">
+            <h2 class="text-black">{{medicine.Name}}</h2>
+            <p>{{medicine.description}}</p>
+
+
+            <p><strong class="text-primary h4">Rs.{{medicine.price}}</strong></p>
+            <form method="post" action="{% url 'save_cart' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Select Quantity" min="1">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-floating">
+                    <input type="text" class="form-control" id="total" name="total" placeholder="Total Price" readonly>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-floating">
+                        <input type="hidden" class="form-control" name="prod_name" placeholder="Product Name" value="{{medicine.Name}}">
+                        <input type="hidden" class="form-control" id="price" name="price" placeholder="Product Price" value="{{medicine.price}}">
+                        <input type="hidden" class="form-control" name="username" placeholder="Username" value="{{request.session.Username}}">
+                    </div>
+                </div><br>
+                <div class="col-12">
+                    <button class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To Cart</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-section bg-secondary bg-image" style="background-image: url('images/bg_2.jpg');">
+      <div class="container">
+        <div class="row align-items-stretch">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('images/bg_1.jpg');">
+              <div class="banner-1-inner align-self-center">
+                <h2>Pharma Products</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ex ad minus rem odio voluptatem.
+                </p>
+              </div>
+            </a>
+          </div>
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('images/bg_2.jpg');">
+              <div class="banner-1-inner ml-auto  align-self-center">
+                <h2>Rated by Experts</h2>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ex ad minus rem odio voluptatem.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+            <div class="block-7">
+              <h3 class="footer-heading mb-4">About Us</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius quae reiciendis distinctio voluptates
+                sed dolorum excepturi iure eaque, aut unde.</p>
+            </div>
+
+          </div>
+          <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+            <h3 class="footer-heading mb-4">Quick Links</h3>
+            <ul class="list-unstyled">
+              <li><a href="#">Supplements</a></li>
+              <li><a href="#">Vitamins</a></li>
+              <li><a href="#">Diet &amp; Nutrition</a></li>
+              <li><a href="#">Tea &amp; Coffee</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="block-5 mb-5">
+              <h3 class="footer-heading mb-4">Contact Info</h3>
+              <ul class="list-unstyled">
+                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
+                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
+                <li class="email">emailaddress@domain.com</li>
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <p>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              Copyright &copy;
+              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
+              with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank"
+                class="text-primary">Colorlib</a>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{% static 'user/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'user/js/jquery-ui.js' %}"></script>
+  <script src="{% static 'user/js/popper.min.js' %}"></script>
+  <script src="{% static 'user/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'user/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'user/js/jquery.magnific-popup.min.js' %}"></script>
+  <script src="{% static 'user/js/aos.js' %}"></script>
+
+  <script src="{% static 'user/js/main.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $("#quantity").change(function(){
+            var x = document.getElementById("quantity").value;
+            var y = document.getElementById("price").value;
+            var result = x * y;
+            document.getElementById("total").value = result;
+        });
+    });
+</script>
+
+</body>
+
+</html>
