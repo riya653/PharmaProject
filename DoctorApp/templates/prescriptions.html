@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescriptions</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-action {
+            width: 120px;
+        }
+
+        .btn-success,
+        .btn-danger {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Doctor Dashboard</a>
+
+        <div class="navbar-nav ml-auto">
+            <a class="nav-link" href="{% url 'doctor_dashboard' %}">Dashboard</a>
+            <a class="nav-link" href="{% url 'view_appointments' %}">Appointments</a>
+            <a class="nav-link" href="{% url 'patient_forms' %}">Patient Forms</a>
+            <a class="nav-link active" href="{% url 'prescriptions' %}">Prescriptions</a>
+
+            <!-- Notification Icon with Badge -->
+            <a href="{% url 'notifications' %}" class="nav-link position-relative">
+                <i class="fas fa-bell"></i>
+                <span class="badge badge-danger position-absolute" style="top: 5px; right: 0; font-size: 12px;">
+                    {{ notification_count }}
+                </span>
+            </a>
+
+            <!-- Logout Button -->
+            <a href="{% url 'doctor_logout' %}" class="btn btn-danger ml-2">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h2>Prescriptions</h2>
+            <p class="lead">View, send, and manage prescription history.</p>
+        </div>
+
+        <!-- Pending Prescriptions Table -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Pending Prescriptions</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Symptoms</th>
+                            <th>Date Submitted</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for form in pending_forms %}
+                        <tr>
+                            <td>{{ form.patient_name }}</td>
+                            <td>{{ form.symptoms }}</td>
+                            <td>{{ form.date_submitted|date:"Y-m-d H:i" }}</td>
+                            <td><span class="badge badge-warning">Pending</span></td>
+                            <td>
+                                <a href="{% url 'review_form' form.id %}" class="btn btn-success btn-sm btn-action">
+                                    Review
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No pending forms available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Prescription History Table -->
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Prescription History</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Prescription</th>
+                            <th>Date Sent</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prescription in prescriptions %}
+                        <tr>
+                            <td>{{ prescription.patient_name }}</td>
+                            <td>{{ prescription.prescription_text }}</td>
+                            <td>{{ prescription.date_sent|date:"Y-m-d H:i" }}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm btn-action">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No prescription history available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

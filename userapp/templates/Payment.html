@@ -37,7 +37,6 @@
                                 <li class="active"><a href="{% url 'home' %}">Home</a></li>
 
                                 <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
-                                <li><a href="{% url 'appointment_history' %}">Appointments</a></li>
 
                                 <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
                                 <li><a href="{% url 'about_page' %}">About</a></li>
@@ -76,14 +75,14 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 text-center">
-            <form method="post">
-            {% csrf_token %}
-        <div style="align-items: center; justify-content: center; color: white;text-align:center;">
-          <h1>Proceed To Payment</h1><br>
-          <h2>Welcome,{{ username }}</h2><br>
-          <button class="btn btn-primary w-40 py-3" type="submit">Make Payment</button><br><br>
-      </div>
-    </form>
+                <form method="post" action="{% url 'payment' %}">
+                    {% csrf_token %}
+                    <div style="align-items: center; justify-content: center; color: black;text-align:center;">
+                        <h1>Proceed To Payment</h1><br>
+                        <h3>Welcome, {{ username  }}!</h3><br>
+                        <button id="payBtn" class="btn btn-primary">MAKE PAYMENT</button><br><br>
+                    </div>
+                </form>
             <p><a href="{% url 'home' %}" class="btn btn-md height-auto px-4 py-3 btn-primary">Back to Home Page</a></p>
           </div>
         </div>
@@ -152,6 +151,54 @@
   <script src="{% static 'user/js/aos.js' %}"></script>
 
   <script src="{% static 'user/js/main.js' %}"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById("payBtn").onclick = async function (e) {
+        e.preventDefault();  // Stop default form submission
+
+        // Create order via AJAX
+        const response = await fetch("{% url 'payment' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+                "Content-Type": "application/json",
+            }
+        });
+
+        const data = await response.json();
+        if (data.error) {
+            alert("Error: " + data.error);
+            return;
+        }
+
+        // Razorpay options
+        var options = {
+            "key": "rzp_test_OeaKOOhKcsCdcn",  // Razorpay test key
+            "amount": data.amount,
+            "currency": "INR",
+            "name": "Pharma System",
+            "description": "Purchase Medicines",
+            "order_id": data.order_id,
+            "handler": function (response) {
+                alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                window.location.href = "{% url 'home' %}";  // Redirect to home after payment
+            },
+            "prefill": {
+                "name": "{{ username }}",
+                "email": "riyarajesh5171@gmail.com",
+                "contact": "9999999999"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.open();
+    };
+</script>
+
+
 
 </body>
 

@@ -25,24 +25,6 @@
 
 
     <div class="site-navbar py-2">
-
-      <div class="search-wrap">
-        <div class="container">
-          <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
-          <form action="#" method="post">
-            <input type="text" class="form-control" placeholder="Search keyword and hit enter...">
-          </form>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="d-flex align-items-center justify-content-between">
-          <div class="logo">
-            <div class="site-logo">
-              <a href="index.html" class="js-logo-clone"></a>
-            </div>
-          </div>
-          <div class="site-navbar py-2">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="logo">
@@ -56,7 +38,6 @@
                                 <li><a href="{% url 'home' %}">Home</a></li>
 
                                 <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
-                                <li><a href="{% url 'appointment_history' %}">Appointments</a></li>
 
                                 <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
                                 <li><a href="{% url 'about_page' %}">About</a></li>
@@ -70,7 +51,7 @@
                         </nav>
                     </div>
                     <div class="icons">
-                        <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
+                        <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag active">
                             <span class="icon-shopping-bag"></span>
                             <span class="number">{{x}}</span>
                         </a>
@@ -81,9 +62,6 @@
                 </div>
             </div>
         </div>
-        </div>
-      </div>
-    </div>
 
     <div class="bg-light py-3">
       <div class="container">

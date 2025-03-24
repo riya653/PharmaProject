@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from adminApp.models import MedicineDb
+from django.http import JsonResponse
 import razorpay
 # Create your views here.
 def home(request):
@@ -29,20 +30,21 @@ def save_signup(request):
     return redirect(sign_in)
 
 def user_login(request):
-    if request.method=="POST":
-        un=request.POST.get('username')
-        pswd=request.POST.get('pass')
-        if RegisterDb.objects.filter(Username=un,Password=pswd).exists():
-            request.session['Username']=un
-            request.session['Password']=pswd
-            messages.success(request,"Welcome to Pharma")
+    if request.method == "POST":
+        un = request.POST.get('username')
+        pswd = request.POST.get('pass')
+
+        # Check from RegisterDb (custom DB)
+        if RegisterDb.objects.filter(Username=un, Password=pswd).exists():
+            request.session['Username'] = un
+            messages.success(request, "Welcome to Pharma")
             return redirect(home)
         else:
-            messages.warning(request,"Failed To Login")
+            messages.warning(request, "Failed To Login")
             return redirect(sign_in)
-    else:
-        messages.warning(request,"Failed")
-        return redirect(sign_in)
+
+    messages.warning(request, "Failed")
+    return redirect(sign_in)
 
 def user_logout(request):
     del request.session['Username']
@@ -83,31 +85,6 @@ def symptom_checker(request):
 
 
 
-def book_appointment(request):
-    if request.method == "POST":
-        doctor_id = request.POST.get('doctor_id')
-        date = request.POST.get('date')
-        time = request.POST.get('time')
-
-        try:
-            doctor = User.objects.get(id=doctor_id)
-            patient = Patient.objects.get(user=request.user)
-            Appointment.objects.create(patient=patient, doctor=doctor, date=date, time=time, status="Pending")
-            messages.success(request, "Appointment booked successfully")
-            return redirect('appointment_history')
-        except (User.DoesNotExist, Patient.DoesNotExist):
-            messages.error(request, "Invalid Doctor or Patient")
-            return redirect('book_appointment')
-
-    return render(request, 'book_appointment.html')
-
-
-
-# View Appointments
-def appointment_history(request):
-    patient = Patient.objects.get(user=request.user)
-    appointments = Appointment.objects.filter(patient=patient)
-    return render(request,'appointment_history.html',{'appointments': appointments})
 
 
 def save_cart(request):
@@ -192,24 +169,45 @@ def save_checkout(request):
         obj.save()
         return redirect(payment)
 
+
 def payment(request):
-    cart = CartDb.objects.filter(Username=request.session.get('Username', ''))
-    x = cart.count()
     username = request.session.get('Username')
-    customer = CartDb.objects.order_by('-id').first()
-    pay = customer.Total_Price
-    amount = int(pay * 100)  # Razorpay accepts amount in paise
+    customer = CartDb.objects.filter(Username=username).order_by('-id').first()
+
+    if not customer:
+        return JsonResponse({'error': 'No items found in cart!'})
+
+    pay = customer.Total_Price or 0
+    amount = int(pay * 100)  # Amount in paise
     pay_str = str(amount)
 
     if request.method == "POST":
-        client = razorpay.Client(auth=('rzp_test_OeaKOOhKcsCdcn', 'NySeZajvZmcgsBhkRX5UrRF4'))
-        payment = client.order.create({'amount': amount, 'currency': 'INR'})  # FIXED: 'currency' instead of 'order_currency'
+        try:
+            # Razorpay client setup
+            client = razorpay.Client(auth=('rzp_test_OeaKOOhKcsCdcn', 'NySeZajvZmcgsBhkRX5UrRF4'))
 
-    return render(request, "Payment.html", {'username': username, 'customer': customer, 'pay_str': pay_str, 'x': x})
+            # Create Razorpay order
+            payment_order = client.order.create({
+                'amount': amount,
+                'currency': 'INR',
+                'payment_capture': '1'  # Auto capture
+            })
+
+            return JsonResponse({
+                "order_id": payment_order['id'],
+                "amount": amount
+            })
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
+
+    return render(request, "Payment.html", {'username': username, 'customer': customer, 'pay_str': pay_str})
 
 
 def about_page(request):
     cart = CartDb.objects.filter(Username=request.session.get('Username', ''))
     x = cart.count()
     return render(request,"About.html",{'x':x})
+
+
+
 

@@ -18,15 +18,17 @@ from django.contrib import admin
 from django.urls import path,include
 import adminApp.urls
 import userapp.urls
-import DoctorApp.urls
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns,static
 from Pharmacy_System import settings
-
+from django.contrib import admin
+import DoctorApp.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('adminApp/',include(adminApp.urls)),
     path('',include(userapp.urls)),
-    path('doctor/', include('DoctorApp.urls')),
+    path('admin/', admin.site.urls),
+    path('doctor/', include('DoctorApp.urls')),  # Add this line
 ]
+
 urlpatterns+=staticfiles_urlpatterns()
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

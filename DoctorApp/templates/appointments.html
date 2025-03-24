@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #007bff;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .action-btn {
+            width: 120px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Doctor Dashboard</a>
+
+        <div class="navbar-nav ml-auto">
+            <a class="nav-link" href="{% url 'doctor_dashboard' %}">Dashboard</a>
+            <a class="nav-link" href="{% url 'view_appointments' %}">Appointments</a>
+
+            <a class="nav-link" href="{% url 'patient_forms' %}">Patient Forms</a>
+            <a class="nav-link" href="{% url 'prescriptions' %}">Prescriptions</a>
+
+            <!-- Notification Icon with Badge -->
+            <a href="{% url 'notifications' %}" class="nav-link position-relative">
+                <i class="fas fa-bell"></i>
+                <span class="badge badge-danger position-absolute" style="top: 5px; right: 0; font-size: 12px;">
+                    {{ notification_count }}
+                </span>
+            </a>
+
+            <!-- Logout Button -->
+            <a href="{% url 'doctor_logout' %}" class="btn btn-danger ml-2">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h2>Appointments</h2>
+            <p class="lead">Manage and respond to patient appointments here.</p>
+        </div>
+
+        <!-- Appointments Table -->
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Pending Appointments</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Appointment Date</th>
+                            <th>Time</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.patient }}</td>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time }}</td>
+                            <td>{{ appointment.reason }}</td>
+                            <td>
+                                {% if appointment.status == 'Pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                                {% elif appointment.status == 'Accepted' %}
+                                <span class="badge badge-success">Accepted</span>
+                                {% else %}
+                                <span class="badge badge-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if appointment.status == 'Pending' %}
+                                <a href="{% url 'accept_appointment' appointment.id %}" class="btn btn-success btn-sm action-btn">Accept</a>
+                                <a href="{% url 'reject_appointment' appointment.id %}" class="btn btn-danger btn-sm action-btn">Reject</a>
+                                {% else %}
+                                <button class="btn btn-secondary btn-sm action-btn" disabled>No Action</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No pending appointments found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
