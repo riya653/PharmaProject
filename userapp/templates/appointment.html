@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center text-primary mb-4">Book an Appointment</h2>
+
+        <div class="card p-4 shadow-lg">
+          {% if messages %}
+          <div class="alert alert-success">
+          {% for message in messages %}
+          {{ message }}
+            {% endfor %}
+          </div>
+{% endif %}
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                  <label for="patient">Patient Name:</label>
+                    {{ form.patient }}
+                    </div>
+                <div class="form-group mb-3">
+                    <label for="date">Date:</label>
+                    {{ form.date }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="time">Time:</label>
+                    {{ form.time }}
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="reason">Reason:</label>
+                    {{ form.reason }}
+                </div>
+
+                <button type="submit" class="btn btn-success">Book Appointment</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

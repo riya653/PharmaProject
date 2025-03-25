@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.decorators import login_required
@@ -6,9 +7,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Appointment
 from .models import PatientForm, Prescription
 from .models import Notification
-from .forms import AppointmentForm
+from .forms import AppointmentForm,PrescriptionForm
 from .models import SymptomForm as SymptomModel, Notification
 from .forms import SymptomForm
+
+
 
 def doctor_login(request):
     if request.method == 'POST':
@@ -54,6 +57,9 @@ def reject_appointment(request, appointment_id):
     appointment.status = 'Rejected'
     appointment.save()
     return redirect('view_appointments')
+
+# Update Appointment Status and Send Notification
+
 
 # View Patient Forms
 def patient_forms(request):
@@ -107,55 +113,10 @@ def create_appointment(request):
 
 
 
-def submit_symptom_form(request):
-    if request.method == 'POST':
-        form = SymptomForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-            # Create notification for new symptom form submission
-            Notification.objects.create(
-                notification_type='Form Submission',
-                message=f"New symptom form submitted by {form.cleaned_data['patient_name']}"
-            )
-            return redirect('home')
-    else:
-        form = SymptomForm()
-
-    return render(request, 'submit_form.html', {'form': form})
-
-
-
-
-def send_prescription(request, form_id):
-    form = get_object_or_404(PatientForm, id=form_id)
-
-    if request.method == 'POST':
-        medicine = request.POST.get('medicine')
-        dosage = request.POST.get('dosage')
-        notes = request.POST.get('notes')
-
-        Prescription.objects.create(
-            patient_name=form.patient_name,
-            medicine=medicine,
-            dosage=dosage,
-            notes=notes
-        )
-
-        # Update form status to Reviewed
-        form.status = 'Reviewed'
-        form.save()
-
-        # Create notification for sent prescription
-        Notification.objects.create(
-            notification_type='Prescription',
-            message=f"Prescription sent to {form.patient_name}"
-        )
-
-        return redirect('prescriptions')
-
-    return render(request, 'send_prescription.html', {'form': form})
-
 def notifications(request):
-    notifications = Notification.objects.all().order_by('-created_at')
+    notifications = Notification.objects.filter(is_read=False).order_by('-created_at')
     return render(request, 'notifications.html', {'notifications': notifications})
+
+
+
+

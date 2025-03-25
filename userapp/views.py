@@ -1,16 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Patient, Medicine, Appointment, CartDb, Order, RegisterDb,CheckoutDb
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from adminApp.models import MedicineDb
 from django.http import JsonResponse
+from DoctorApp.models import Notification,Appointment
 import razorpay
+from .forms import PatientAppointmentForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
+from DoctorApp.models import Notification
+
 def home(request):
     cart = CartDb.objects.filter(Username=request.session.get('Username', ''))
     x = cart.count()
-    return render(request,"Home.html",{'x':x})
+    return render(request, 'Home.html', {'cart_count': x})
+
 
 def sign_in(request):
     return render(request,"patient_login.html")
@@ -207,6 +216,32 @@ def about_page(request):
     cart = CartDb.objects.filter(Username=request.session.get('Username', ''))
     x = cart.count()
     return render(request,"About.html",{'x':x})
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import PatientAppointmentForm
+
+def book_appointment(request):
+    if request.method == 'POST':
+        form = PatientAppointmentForm(request.POST)
+        if form.is_valid():
+            appointment = form.save()
+
+            # Create a notification for the doctor
+            Notification.objects.create(
+                notification_type='Appointment',
+                message=f"New appointment request from {appointment.patient} on {appointment.date} at {appointment.time}.",
+                is_read=False
+            )
+
+            messages.success(request, 'Appointment booked successfully!')
+            return redirect('home')  # Redirect to home or desired page
+    else:
+        form = PatientAppointmentForm()
+    return render(request, 'appointment.html', {'form': form})
+
 
 
 

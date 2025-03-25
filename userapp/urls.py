@@ -17,5 +17,8 @@ urlpatterns=[
     path('payment/',views.payment,name="payment"),
     path('cart/remove/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('about_page/', views.about_page, name='about_page'),
+    path('book-appointment/', views.book_appointment, name='book_appointment'),
+
+
 
 ]

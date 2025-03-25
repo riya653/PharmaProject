@@ -24,43 +24,58 @@
 
     <!-- Navigation -->
     <div class="site-navbar py-2">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="logo">
-                        <div class="site-logo">
-                            <a href="{% url 'home' %}" class="js-logo-clone">Patient</a>
-                        </div>
-                    </div>
-                    <div class="main-nav d-none d-lg-block">
-                        <nav class="site-navigation text-right text-md-center" role="navigation">
-                            <ul class="site-menu js-clone-nav d-none d-lg-block">
-                                <li class="active"><a href="{% url 'home' %}">Home</a></li>
-
-                                <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
-
-                                <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
-                                <li><a href="{% url 'about_page' %}">About</a></li>
-
-                                {% if request.session.Username %}
-                                <li><a href="{% url 'user_logout' %}" class="nav-item nav-link btn btn-primary py-2 px-4">WELCOME {{request.session.Username}} /Logout</a></li>
-                                {% else %}
-                                <li><a href="{% url 'sign_in' %}" class="btn btn-primary py-2 px-4">Register/Login</a></li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="icons">
-                        <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
-                            <span class="icon-shopping-bag"></span>
-                            <span class="number">{{x}}</span>
-                        </a>
-                        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
-                            <span class="icon-menu"></span>
-                        </a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <div class="site-logo">
+              <a href="{% url 'home' %}" class="js-logo-clone">Patient</a>
             </div>
+          </div>
+          <div class="main-nav d-none d-lg-block">
+            <nav class="site-navigation text-right text-md-center" role="navigation">
+              <ul class="site-menu js-clone-nav d-none d-lg-block">
+                <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
+                <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
+                <li><a href="{% url 'book_appointment' %}">Appointments</a></li> <!-- New Code -->
+                <li><a href="{% url 'about_page' %}">About</a></li>
+
+                {% if request.session.Username %}
+                <li>
+                  <a href="{% url 'user_logout' %}" class="nav-item nav-link btn btn-primary py-2 px-4">
+                    WELCOME {{ request.session.Username }} / Logout
+                  </a>
+                </li>
+                {% else %}
+                <li>
+                  <a href="{% url 'sign_in' %}" class="btn btn-primary py-2 px-4">Register/Login</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+          <div class="icons">
+            <!-- Notification Icon -->
+            <a href="#" class="icons-btn d-inline-block"
+               style="position: relative; font-size: 20px; color: #333; margin-right: 15px;">
+              <span class="icon-bell"></span>
+              {% if notification_count > 0 %}
+              <span class="number" style="position: absolute; top: -8px; right: -8px; background-color: #dc3545; color: #fff; font-size: 12px; border-radius: 50%; padding: 3px 6px; line-height: 1;">
+              {{ notification_count }}
+              </span>
+              {% endif %}
+            </a>
+            <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
+              <span class="icon-shopping-bag"></span>
+              <span class="number">{{ x }}</span>
+            </a>
+            <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
+              <span class="icon-menu"></span>
+            </a>
+          </div>
         </div>
+      </div>
+    </div>
 
     <!-- Hero Section -->
     <div class="site-blocks-cover" style="background-image: url('{% static 'user/images/hero_1.jpg' %}');">
@@ -69,7 +84,7 @@
           <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
             <div class="site-block-cover-content text-center">
               <h2 class="sub-title">Effective Medicine, New Medicine Everyday</h2>
-              <h1>Welcome,{{request.session.Username}}</h1>
+              <h1>Welcome, {{ request.session.Username }}</h1>
               <p>
                 <a href="{% url 'medicine_list' %}" class="btn btn-primary px-5 py-3">Order Medicines</a>
               </p>
@@ -88,7 +103,7 @@
               <div class="card-body">
                 <h5 class="card-title">Book Appointment</h5>
                 <p class="card-text">Schedule a consultation with our specialists.</p>
-                <a href="#" class="btn btn-outline-primary">Book Now</a>
+                <a href="{% url 'book_appointment' %}" class="btn btn-outline-primary">Book Now</a> <!-- New Code -->
               </div>
             </div>
           </div>
@@ -98,44 +113,6 @@
                 <h5 class="card-title">Order Medicines</h5>
                 <p class="card-text">Browse and order medicines from our store.</p>
                 <a href="{% url 'medicine_list' %}" class="btn btn-outline-info">Order Now</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Testimonials Section (Optional) -->
-    <div class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="title-section text-center col-12">
-            <h2 class="text-uppercase">Patient Testimonials</h2>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 block-3 products-wrap">
-            <div class="nonloop-block-3 no-direction owl-carousel">
-              <div class="testimony">
-                <blockquote>
-                  <img src="{% static 'user/images/person_1.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
-                  <p>&ldquo;I received excellent care and personalized treatment. Highly recommended!&rdquo;</p>
-                </blockquote>
-                <p>&mdash; Kelly Holmes</p>
-              </div>
-              <div class="testimony">
-                <blockquote>
-                  <img src="{% static 'user/images/person_2.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
-                  <p>&ldquo;Booking appointments and ordering medicines online has never been easier.&rdquo;</p>
-                </blockquote>
-                <p>&mdash; Rebecca Morando</p>
-              </div>
-              <div class="testimony">
-                <blockquote>
-                  <img src="{% static 'user/images/person_3.jpg' %}" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
-                  <p>&ldquo;Great platform with comprehensive support. My health is in good hands.&rdquo;</p>
-                </blockquote>
-                <p>&mdash; Lucas Gallone</p>
               </div>
             </div>
           </div>
@@ -157,7 +134,7 @@
             <h3 class="footer-heading mb-4">Quick Links</h3>
             <ul class="list-unstyled">
               <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
-              <li><a href="#">Book Appointment</a></li>
+              <li><a href="{% url 'book_appointment' %}">Book Appointment</a></li> <!-- New Code -->
             </ul>
           </div>
           <div class="col-md-6 col-lg-3">

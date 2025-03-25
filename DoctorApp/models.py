@@ -54,6 +54,9 @@ class Prescription(models.Model):
         return f"Prescription for {self.patient_name}"
 
 
+# DoctorApp/models.py
+from django.db import models
+
 class Notification(models.Model):
     NOTIFICATION_TYPES = (
         ('Appointment', 'Appointment'),
@@ -68,6 +71,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.notification_type} - {self.message}"
+
 
 
 class SymptomForm(models.Model):
