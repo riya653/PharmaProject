@@ -56,8 +56,11 @@ def user_login(request):
     return redirect(sign_in)
 
 def user_logout(request):
-    del request.session['Username']
-    del request.session['Password']
+    # Check and delete 'Username' if it exists
+    if 'Username' in request.session:
+        del request.session['Username']
+
+    # No need to delete 'Password' since it's not stored in session
     return redirect(user_login)
 
 
