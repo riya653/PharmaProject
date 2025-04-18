@@ -18,7 +18,7 @@ from DoctorApp.models import Notification
 def home(request):
     cart = CartDb.objects.filter(Username=request.session.get('Username', ''))
     x = cart.count()
-    return render(request, 'Home.html', {'cart_count': x})
+    return render(request, 'Home.html', {'x': x})
 
 
 def sign_in(request):
@@ -213,6 +213,7 @@ def payment(request):
             return JsonResponse({"error": str(e)})
 
     return render(request, "Payment.html", {'username': username, 'customer': customer, 'pay_str': pay_str})
+
 
 
 def about_page(request):

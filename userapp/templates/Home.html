@@ -35,10 +35,11 @@
             <nav class="site-navigation text-right text-md-center" role="navigation">
               <ul class="site-menu js-clone-nav d-none d-lg-block">
                 <li class="active"><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'about_page' %}">About</a></li>
                 <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
                 <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
                 <li><a href="{% url 'book_appointment' %}">Appointments</a></li> <!-- New Code -->
-                <li><a href="{% url 'about_page' %}">About</a></li>
+
 
                 {% if request.session.Username %}
                 <li>
@@ -56,15 +57,10 @@
           </div>
           <div class="icons">
             <!-- Notification Icon -->
-            <a href="#" class="icons-btn d-inline-block"
-               style="position: relative; font-size: 20px; color: #333; margin-right: 15px;">
-              <span class="icon-bell"></span>
-              {% if notification_count > 0 %}
-              <span class="number" style="position: absolute; top: -8px; right: -8px; background-color: #dc3545; color: #fff; font-size: 12px; border-radius: 50%; padding: 3px 6px; line-height: 1;">
-              {{ notification_count }}
-              </span>
-              {% endif %}
-            </a>
+             <a href="{% url 'notifications' %}" class="icons-btn d-inline-block">
+        <span class="icon-bell"></span>
+        <span class="number">{{ unread_notifications }}</span> <!-- Dynamic Count -->
+    </a>
             <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
               <span class="icon-shopping-bag"></span>
               <span class="number">{{ x }}</span>
@@ -141,20 +137,11 @@
             <div class="block-5 mb-5">
               <h3 class="footer-heading mb-4">Contact Info</h3>
               <ul class="list-unstyled">
-                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
-                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
-                <li class="email">emailaddress@domain.com</li>
+                <li class="address">123 MedCare Ave, MG Road, Kochi, Kerala 682016, India</li>
+                <li class="phone"><a href="tel://23923929210">+91 98470 12345</a></li>
+                <li class="email">pharmac4re@gmail.com</li>
               </ul>
             </div>
-          </div>
-        </div>
-        <div class="row pt-5 mt-5 text-center">
-          <div class="col-md-12">
-            <p>
-              Copyright &copy;
-              <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with
-              <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">Colorlib</a>
-            </p>
           </div>
         </div>
       </div>

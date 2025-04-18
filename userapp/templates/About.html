@@ -25,43 +25,50 @@
 
 
     <div class="site-navbar py-2">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="logo">
-                        <div class="site-logo">
-                            <a href="{% url 'home' %}" class="js-logo-clone">Patient</a>
-                        </div>
-                    </div>
-                    <div class="main-nav d-none d-lg-block">
-                        <nav class="site-navigation text-right text-md-center" role="navigation">
-                            <ul class="site-menu js-clone-nav d-none d-lg-block">
-                                <li><a href="{% url 'home' %}">Home</a></li>
-
-                                <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
-
-                                <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
-                                <li class="active"><a href="{% url 'about_page' %}">About</a></li>
-
-                                {% if request.session.Username %}
-                                <li><a href="{% url 'user_logout' %}" class="nav-item nav-link btn btn-primary py-2 px-4">WELCOME {{request.session.Username}} /Logout</a></li>
-                                {% else %}
-                                <li><a href="{% url 'sign_in' %}" class="btn btn-primary py-2 px-4">Register/Login</a></li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="icons">
-                        <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
-                            <span class="icon-shopping-bag"></span>
-                            <span class="number">{{x}}</span>
-                        </a>
-                        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
-                            <span class="icon-menu"></span>
-                        </a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <div class="site-logo">
+              <a href="{% url 'home' %}" class="js-logo-clone">Patient</a>
             </div>
+          </div>
+          <div class="main-nav d-none d-lg-block">
+            <nav class="site-navigation text-right text-md-center" role="navigation">
+              <ul class="site-menu js-clone-nav d-none d-lg-block">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                  <li class="active"><a href="{% url 'about_page' %}">About</a></li>
+                <li><a href="{% url 'medicine_list' %}">Medicines</a></li>
+                <li><a href="{% url 'symptom_checker' %}">Symptom Checker</a></li>
+                <li><a href="{% url 'book_appointment' %}">Appointments</a></li> <!-- New Code -->
+
+                {% if request.session.Username %}
+                <li>
+                  <a href="{% url 'user_logout' %}" class="nav-item nav-link btn btn-primary py-2 px-4">
+                    WELCOME {{ request.session.Username }} / Logout
+                  </a>
+                </li>
+                {% else %}
+                <li>
+                  <a href="{% url 'sign_in' %}" class="btn btn-primary py-2 px-4">Register/Login</a>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+          <div class="icons">
+            <!-- Notification Icon -->
+
+            <a href="{% url 'cart_page' %}" class="icons-btn d-inline-block bag">
+              <span class="icon-shopping-bag"></span>
+              <span class="number">{{ x }}</span>
+            </a>
+            <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
+              <span class="icon-menu"></span>
+            </a>
+          </div>
         </div>
+      </div>
+    </div>
 
     <div class="site-blocks-cover inner-page" style="background-image: url('{% static 'user/images/hero_1.jpg' %}');">
       <div class="container">
@@ -171,9 +178,9 @@
             <div class="block-5 mb-5">
               <h3 class="footer-heading mb-4">Contact Info</h3>
               <ul class="list-unstyled">
-                <li class="address">203 Fake St. Mountain View, San Francisco, California, USA</li>
-                <li class="phone"><a href="tel://23923929210">+2 392 3929 210</a></li>
-                <li class="email">emailaddress@domain.com</li>
+                <li class="address">123 MedCare Ave, MG Road, Kochi, Kerala 682016, India</li>
+                <li class="phone"><a href="tel://23923929210">+91 98470 12345</a></li>
+                <li class="email">pharmac4re@gmail.com</li>
               </ul>
             </div>
 

@@ -50,8 +50,6 @@
         <div class="navbar-nav ml-auto">
             <a class="nav-link active" href="{% url 'doctor_dashboard' %}">Dashboard</a>
             <a class="nav-link" href="{% url 'view_appointments' %}">Appointments</a>
-            <a class="nav-link" href="{% url 'patient_forms' %}">Patient Forms</a>
-            <a class="nav-link" href="{% url 'prescriptions' %}">Prescriptions</a>
              <a href="{% url 'notifications' %}" class="nav-link position-relative">
             <i class="fas fa-bell"></i>
             <!-- Notification Badge -->
@@ -79,32 +77,12 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Pending Appointments</h5>
                         <p class="card-text">{{ pending_appointments_count }} pending</p>
-                        <a href="#" class="btn btn-primary">View All</a>
+                        <a href="{% url 'view_appointments' %}" class="btn btn-primary">View All</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Patient Forms Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card shadow">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Received Forms</h5>
-                        <p class="card-text">{{ patient_forms_count }} forms received</p>
-                        <a href="#" class="btn btn-success">Check Forms</a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Prescriptions Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card shadow">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Prescriptions Created</h5>
-                        <p class="card-text">{{ prescriptions_count }} prescriptions</p>
-                        <a href="#" class="btn btn-info">Review History</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
